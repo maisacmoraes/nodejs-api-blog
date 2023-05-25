@@ -11,6 +11,10 @@ app.get('/', (_request, response) => {
 
 app.use(express.json());
 
+const postsRoutes = require('./routes/postsRoutes');
+
+app.use(postsRoutes);
+
 // ...
 
 // É importante exportar a constante `app`,
