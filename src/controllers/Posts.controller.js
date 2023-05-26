@@ -5,11 +5,22 @@ const getPosts = async (_req, res) => {
       const posts = await postsService.getPosts();
       res.status(200).json(posts);
     } catch (err) {
-      res.status(500).json({
-        message: 'Erro ao buscar posts no banco',
-        error: err.message,
-      });
+      res.status(500).json({ error: err.message });
     }
   };
 
-module.exports = { getPosts };
+const getPostById = async (req, res) => {
+    try {
+    const { id } = req.params;
+
+    const post = await postsService.getPostById(id);
+
+    if (!post) return res.status(404).json({ message: 'Post does not exist' });
+
+    return res.status(200).json(post);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+
+module.exports = { getPosts, getPostById };
