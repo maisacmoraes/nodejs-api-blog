@@ -1,7 +1,5 @@
 const express = require('express');
 
-// ...
-
 const app = express();
 
 // não remova ou mova esse endpoint
@@ -11,9 +9,9 @@ app.get('/', (_request, response) => {
 
 app.use(express.json());
 
-const postsRoutes = require('./routes/postsRoutes');
+const userRoutes = require('./routes/UserRoutes');
 
-app.use(postsRoutes);
+app.use(userRoutes);
 
 // ...
 
