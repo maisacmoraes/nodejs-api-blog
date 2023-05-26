@@ -6,8 +6,7 @@ const getUserById = (userId) => User.findByPk(userId, { attributes: { exclude: [
 
 const getByUserMail = async (email) => User.findOne({ where: { email } });
 
-const createUser = async (objUser) => 
-  User.create(objUser);
+const createUser = async (objUser) => User.create(objUser);
 
 module.exports = {
   getUsers,
