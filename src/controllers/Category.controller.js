@@ -1,5 +1,14 @@
 const { categoryService } = require('../services');
 
+const getCategories = async (req, res) => {
+  try {
+    const categories = await categoryService.getCategories();
+    return res.status(200).json(categories);
+  } catch (err) {
+    return res.status(500).json({ message: 'Erro interno', error: err.message });
+  }
+};
+
 const createCategory = async (req, res) => {
     try {
     const category = req.body;
@@ -16,5 +25,6 @@ const createCategory = async (req, res) => {
 };
 
 module.exports = {
+    getCategories,
     createCategory,
 };
