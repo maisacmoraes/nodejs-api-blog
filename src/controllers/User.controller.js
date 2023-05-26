@@ -2,16 +2,34 @@ const { createToken } = require('../auth/authfunctions');
 const { userService } = require('../services');
 
 const getUsers = async (req, res) => {
-    try {
-      const users = await userService.getUsers();
-      res.status(200).json(users);
-    } catch (err) {
-      res.status(500).json({
+  try {
+    const users = await userService.getUsers();
+    res.status(200).json(users);
+  } catch (err) {
+    res.status(500).json({
+      message: 'Erro ao buscar usuários no banco',
+      error: err.message,
+    });
+  }
+};
+
+const getUserById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const user = await userService.getUserById(Number(id));
+    if (!user) {
+        return res.status(404).json({ message: 'User does not exist' });
+    }
+
+    return res.status(200).json(user);
+  } catch (err) {
+    res.status(500).json({
         message: 'Erro ao buscar usuários no banco',
         error: err.message,
       });
-    }
-  };
+  }
+};
 
 const createUser = async (req, res) => {
   try {
@@ -37,5 +55,6 @@ const createUser = async (req, res) => {
 
 module.exports = {
     getUsers,
+    getUserById,
     createUser,
 };

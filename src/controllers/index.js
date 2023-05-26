@@ -1,8 +1,9 @@
 const createLogin = require('./Login.controller');
-const { createUser, getUsers } = require('./User.controller');
+const { createUser, getUsers, getUserById } = require('./User.controller');
 
 module.exports = {
+    getUsers,
+    getUserById,
     createLogin,
     createUser,
-    getUsers,
 };
