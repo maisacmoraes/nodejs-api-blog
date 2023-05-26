@@ -14,26 +14,26 @@ const getUsers = async (req, res) => {
   };
 
 const createUser = async (req, res) => {
-    try {
-        const obj = req.body;
+  try {
+    const obj = req.body;
 
-        const validateEmail = await userService.getByUserMail(obj.email);
+    const validateEmail = await userService.getByUserMail(obj.email);
 
-        if (validateEmail !== null) {
-            return res.status(409).json({ message: 'User already registered' });
-        }
-
-        const user = await userService.createUser(obj);
+    if (validateEmail !== null) {
+      return res.status(409).json({ message: 'User already registered' });
+    }
+ 
+    const user = await userService.createUser(obj);
     
-        const { password: _password, ...userWithoutPassword } = user.dataValues;
+    const { password: _password, ...userWithoutPassword } = user.dataValues;
 
-        const token = createToken(userWithoutPassword);
+    const token = createToken(userWithoutPassword);
     
-        return res.status(201).json({ token });
-      } catch (error) {
-        return res.status(500).json({ message: 'Erro interno', error: error.message });
-      }
-    };
+    return res.status(201).json({ token });
+  } catch (error) {
+      return res.status(500).json({ message: 'Erro interno', error: error.message });
+  }
+};
 
 module.exports = {
     getUsers,
