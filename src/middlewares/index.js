@@ -1,9 +1,11 @@
-const validadeDisplayName = require('./validateDisplayName');
+const validateJWT = require('./validateJWT');
+const validateDisplayName = require('./validateDisplayName');
 const validateEmail = require('./validateEmail');
 const validatePassword = require('./validatePassword');
 
 module.exports = {
-    validadeDisplayName,
+    validateJWT,
+    validateDisplayName,
     validateEmail,
     validatePassword,
 };

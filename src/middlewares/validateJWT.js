@@ -1,11 +1,11 @@
 const { verifyToken } = require('../auth/authfunctions');
 
-const validateJwt = async (req, res, next) => {
+const validateJWT = async (req, res, next) => {
   try {
     const { authorization } = req.headers;
 
     if (!authorization) { 
-      return res.status(400).json({ message: 'A requisição precisa de um token válido' });
+      return res.status(401).json({ message: 'Token not found' });
     }
 
     const data = verifyToken(authorization);
@@ -14,10 +14,9 @@ const validateJwt = async (req, res, next) => {
     next();
   } catch (error) {
     res
-      .status(500)
-      .json({ message: 'Erro ao acessar o endpoint',
-        error: 'É necessário um token válido par acessar esse endpoint' });
+      .status(401)
+      .json({ message: 'Expired or invalid token' });
   }
 };
 
-module.exports = validateJwt;
+module.exports = validateJWT;
