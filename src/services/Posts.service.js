@@ -19,6 +19,8 @@ const updatePost = async ({ title, content, id }) => {
     );
 };
 
+const deletePost = async (id) => BlogPost.destroy({ where: { id } });
+
 const searchPost = async (q) => {
     const search = `%${q}%`;
 
@@ -35,4 +37,4 @@ const searchPost = async (q) => {
       return post;
 };
 
-module.exports = { getPosts, getPostById, updatePost, searchPost };
+module.exports = { getPosts, getPostById, updatePost, deletePost, searchPost };

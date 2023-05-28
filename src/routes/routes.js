@@ -4,7 +4,8 @@ const routes = express.Router();
 
 // const validateJwt = require('../middlewares/validateJWT');
 const { createLogin, createUser, getUsers, getUserById, createCategory, getCategories,
-    getPosts, getPostById, updatePost, deleteUser, searchPost } = require('../controllers');
+    getPosts, getPostById, updatePost, deleteUser,
+    searchPost, deletePost } = require('../controllers');
 const { validateJWT, validateDisplayName,
     validateEmail, validatePassword } = require('../middlewares');
 
@@ -22,5 +23,6 @@ routes.get('/post', validateJWT, getPosts);
 routes.get('/post/search', validateJWT, searchPost);
 routes.get('/post/:id', validateJWT, getPostById);
 routes.put('/post/:id', validateJWT, updatePost);
+routes.delete('/post/:id', validateJWT, deletePost);
 
 module.exports = routes;

@@ -48,6 +48,28 @@ const updatePost = async (req, res) => {
     }
 };
 
+const deletePost = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { data } = req.payload;
+    
+        const post = await postsService.getPostById(id);
+
+        if (data.id !== post.id) {
+            return res.status(401).json({ message: 'Unauthorized user' });
+        }
+    
+        if (!post) {
+            return res.status(404).json({ message: 'Post does not exist' });
+        }
+    
+        const deletedPost = await postsService.deletePost(id);
+        return res.status(204).json(deletedPost);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+
 const searchPost = async (req, res) => {
     try {
         const { q } = req.query;
@@ -60,4 +82,4 @@ const searchPost = async (req, res) => {
     }
   };
   
-module.exports = { getPosts, getPostById, updatePost, searchPost };
+module.exports = { getPosts, getPostById, updatePost, searchPost, deletePost };
