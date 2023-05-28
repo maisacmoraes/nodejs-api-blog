@@ -9,9 +9,9 @@ app.get('/', (_request, response) => {
 
 app.use(express.json());
 
-const userRoutes = require('./routes/UserRoutes');
+const routes = require('./routes/routes');
 
-app.use(userRoutes);
+app.use(routes);
 
 // ...
 
