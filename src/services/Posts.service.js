@@ -1,5 +1,5 @@
 const { Op } = require('sequelize');
-const { BlogPost, User, Category } = require('../models');
+const { BlogPost, User, Category, sequelize, PostCategory } = require('../models');
 
 const getPosts = async () => BlogPost.findAll({
         include: [{ model: User, as: 'user', attributes: { exclude: 'password' } },
@@ -37,4 +37,40 @@ const searchPost = async (q) => {
       return post;
 };
 
-module.exports = { getPosts, getPostById, updatePost, deletePost, searchPost };
+const validateCategoryIds = async (categoryIds) => {
+  const arrCategoryIds = categoryIds.map((id) => Category.findByPk(id));
+
+  return Promise.all(arrCategoryIds);
+};
+
+const createPost = async ({ title, content, userId, categoryIds, published, updated }) => {
+  const result = await sequelize.transaction(async (t) => {
+    const post = await BlogPost.create(
+      { title, content, userId, published, updated },
+      { transaction: t },
+    );
+
+    console.log(categoryIds);
+
+    const promise = categoryIds.map((categoryId) => PostCategory.create(
+        { categoryId, postId: post.id },
+        { transaction: t },
+      ));
+
+    await Promise.all(promise);
+
+    return post;
+  });
+
+    return result;
+  };
+
+module.exports = {
+  getPosts,
+  getPostById,
+  updatePost,
+  deletePost,
+  searchPost,
+  createPost,
+  validateCategoryIds,
+ };

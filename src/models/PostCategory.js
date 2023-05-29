@@ -15,13 +15,13 @@ PostCategory.associate = (models) => {
     models.BlogPost.belongsToMany(models.Category, {
       as: 'categories',
       through: PostCategory,
-      foreignKey: 'postId', 
+      foreignKey: 'post_id', 
       // otherKey: 'categoryId',
     });
     models.Category.belongsToMany(models.BlogPost, {
       as: 'posts',
       through: PostCategory,
-      foreignKey: 'categoryId', 
+      foreignKey: 'category_id', 
       // otherKey: 'postId',
     });
   };

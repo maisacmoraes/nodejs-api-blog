@@ -20,6 +20,8 @@ module.exports = async (req, res) => {
 
     const { password: _password, ...userWithoutPassword } = user.dataValues;
 
+    console.log(userWithoutPassword);
+
     const token = createToken(userWithoutPassword);
 
     return res.status(200).json({ token });

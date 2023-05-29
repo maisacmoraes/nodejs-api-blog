@@ -81,5 +81,32 @@ const searchPost = async (req, res) => {
         res.status(500).json({ error: err.message });
     }
   };
+
+  const createPost = async (req, res) => {
+    const { title, content, categoryIds } = req.body;
+    const { data } = req.payload;
+
+    console.log(data.id);
+
+    if (!title || !content || !categoryIds) {
+        return res.status(400).json({ message: 'Some required fields are missing' });
+    }
+    
+    const validateId = (await postsService.validateCategoryIds(categoryIds)).some((id) => !id);
+
+    if (validateId) {
+        return res.status(400).json({ message: 'one or more "categoryIds" not found' }); 
+    }
+   
+  const post = await postsService.createPost({ title,
+    content,
+    userId: data.id,
+    categoryIds,
+    updated: new Date(),
+    published: new Date(),
+  });
+
+  return res.status(201).json(post);
+  };
   
-module.exports = { getPosts, getPostById, updatePost, searchPost, deletePost };
+module.exports = { getPosts, getPostById, updatePost, searchPost, deletePost, createPost };
