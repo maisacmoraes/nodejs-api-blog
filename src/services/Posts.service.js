@@ -67,33 +67,22 @@ const validateCategoryIds = async (categoryIds) => {
   return Promise.all(arrCategoryIds);
 };
 
-const createPost = async ({
-  title,
-  content,
-  userId,
-  categoryIds,
-  published,
-  updated,
-}) => {
-  const result = await sequelize.transaction(async (t) => {
+const createPost = async ({ title, content, userId, categoryIds }) =>
+  sequelize.transaction(async (t) => {
+    const now = new Date();
     const post = await BlogPost.create(
-      { title, content, userId, published, updated },
+      { title, content, userId, published: now, updated: now },
       { transaction: t }
     );
 
-    console.log(categoryIds);
-
-    const promise = categoryIds.map((categoryId) =>
-      PostCategory.create({ categoryId, postId: post.id }, { transaction: t })
+    await Promise.all(
+      categoryIds.map((categoryId) =>
+        PostCategory.create({ categoryId, postId: post.id }, { transaction: t })
+      )
     );
-
-    await Promise.all(promise);
 
     return post;
   });
-
-  return result;
-};
 
 module.exports = {
   getPosts,

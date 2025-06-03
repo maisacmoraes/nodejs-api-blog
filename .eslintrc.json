@@ -1,7 +1,12 @@
 {
   "root": true,
-  "extends": ["trybe-backend"],
+  "extends": [
+    "trybe-backend",
+    "eslint:recommended",
+    "plugin:prettier/recommended"
+  ],
   "rules": {
-    "sonarjs/no-duplicate-string": ["error", 5]
+    "sonarjs/no-duplicate-string": ["error", 5],
+    "comma-dangle": ["error", "always-multiline"]
   }
 }
