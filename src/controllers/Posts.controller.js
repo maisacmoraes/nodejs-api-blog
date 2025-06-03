@@ -1,4 +1,4 @@
-const { postsService } = require("../services");
+const { postsService } = require('../services');
 
 const getPosts = async (_req, res) => {
   try {
@@ -15,7 +15,7 @@ const getPostById = async (req, res) => {
 
     const post = await postsService.getPostById(id);
 
-    if (!post) return res.status(404).json({ message: "Post does not exist" });
+    if (!post) return res.status(404).json({ message: 'Post does not exist' });
 
     return res.status(200).json(post);
   } catch (err) {
@@ -26,24 +26,20 @@ const getPostById = async (req, res) => {
 const updatePost = async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, content } = req.body;
     const { data } = req.payload;
 
-    if (!title || !content) {
+    if (!req.body.title || !req.body.content) {
       return res
         .status(400)
-        .json({ message: "Some required fields are missing" });
+        .json({ message: 'Some required fields are missing' });
     }
 
     const post = await postsService.getPostById(id);
     if (data.id !== post.userId) {
-      return res.status(401).json({ message: "Unauthorized user" });
+      return res.status(401).json({ message: 'Unauthorized user' });
     }
 
-    await postsService.updatePost({ id, title, content });
-
-    const updatedPost = await postsService.getPostById(id);
-
+    const updatedPost = await postsService.updatePost(id, req.body);
     return res.status(200).json(updatedPost);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -58,11 +54,11 @@ const deletePost = async (req, res) => {
     const post = await postsService.getPostById(id);
 
     if (!post) {
-      return res.status(404).json({ message: "Post does not exist" });
+      return res.status(404).json({ message: 'Post does not exist' });
     }
 
     if (data.id !== post.userId) {
-      return res.status(401).json({ message: "Unauthorized user" });
+      return res.status(401).json({ message: 'Unauthorized user' });
     }
 
     const deletedPost = await postsService.deletePost(id);
@@ -93,7 +89,7 @@ const createPost = async (req, res) => {
   if (!title || !content || !categoryIds) {
     return res
       .status(400)
-      .json({ message: "Some required fields are missing" });
+      .json({ message: 'Some required fields are missing' });
   }
 
   const validateId = (await postsService.validateCategoryIds(categoryIds)).some(
